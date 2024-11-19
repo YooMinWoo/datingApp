@@ -1,7 +1,6 @@
 package com.mintae.dating.security.jwt;
 
 import com.mintae.dating.security.service.CustomUserDetailsService;
-import com.mintae.dating.service.RandomNumberProvider;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
 import jakarta.servlet.FilterChain;

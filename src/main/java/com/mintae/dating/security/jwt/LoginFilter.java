@@ -1,14 +1,12 @@
 package com.mintae.dating.security.jwt;
 
 import com.mintae.dating.security.user.CustomUserDetails;
-import com.mintae.dating.service.RandomNumberProvider;
+import com.mintae.dating.service.VerificationProvider;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,12 +23,12 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final RandomNumberProvider randomNumberProvider;
+    private final VerificationProvider verificationProvider;
 
-    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RandomNumberProvider randomNumberProvider ,String loginUrl) {
+    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, VerificationProvider verificationProvider , String loginUrl) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
-        this.randomNumberProvider = randomNumberProvider;
+        this.verificationProvider = verificationProvider;
         setFilterProcessesUrl(loginUrl);
     }
 
@@ -39,13 +37,10 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
         // 클라이언트 요청에서 username(회원 아이디), password 추출
         String username = request.getParameter("mobile");
-        String password = request.getParameter("rn");
-
-        System.out.println(randomNumberProvider.getRn());
-        System.out.println(password);
+        String verification = username + " " + request.getParameter("verification");
 
         // 검증을 위해 token에 담음
-        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,password);
+        UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(username,verification);
 
         // token에 담은 검증을 위한 AuthenticationManager로 전달
         return authenticationManager.authenticate(authenticationToken);
@@ -56,6 +51,8 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
         String username = customUserDetails.getUsername();
+
+        System.out.println("휴대폰 번호: "+username);
 
         Collection<? extends GrantedAuthority> authorities = authResult.getAuthorities();
         Iterator<? extends GrantedAuthority> iterator = authorities.iterator();

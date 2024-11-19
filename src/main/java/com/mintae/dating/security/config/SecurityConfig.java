@@ -4,7 +4,7 @@ import com.mintae.dating.security.jwt.JwtFilter;
 import com.mintae.dating.security.jwt.JwtUtil;
 import com.mintae.dating.security.jwt.LoginFilter;
 import com.mintae.dating.security.service.CustomUserDetailsService;
-import com.mintae.dating.service.RandomNumberProvider;
+import com.mintae.dating.service.VerificationProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,7 +18,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -28,7 +27,7 @@ public class SecurityConfig {
     private final CustomUserDetailsService customUserDetailsService;
     private final AuthenticationConfiguration authenticationConfiguration;
     private final JwtUtil jwtUtil;
-    private final RandomNumberProvider randomNumberProvider;
+    private final VerificationProvider randomNumberProvider;
     private String loginUrl = "/loginProcess";
 
     @Bean
@@ -46,7 +45,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/signup", "/sendRandomNumber").permitAll()
+                        .requestMatchers("/", "/signup", "/verification").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

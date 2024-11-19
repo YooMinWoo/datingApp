@@ -1,20 +1,17 @@
 package com.mintae.dating.controller;
 
 import com.mintae.dating.dto.SignupDTO;
-import com.mintae.dating.service.RandomNumberProvider;
+import com.mintae.dating.service.VerificationProvider;
 import com.mintae.dating.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
 public class UserController {
 
     private final UserService userService;
-    private final RandomNumberProvider randomNumberProvider;
+    private final VerificationProvider verificationProvider;
 
     @PostMapping("/signup")
     public String signup(@RequestBody SignupDTO signupDTO){
@@ -26,11 +23,10 @@ public class UserController {
         }
     }
 
-    @GetMapping("/sendRandomNumber")
-    public int sendRandomNumber(){
-        randomNumberProvider.setRn();
-        System.out.println("/sendRandomNumber get매핑: "+randomNumberProvider.getRn());
-        return randomNumberProvider.getRn();
+    @GetMapping("/verification")
+    public String verification(@RequestParam("mobile") String mobile){
+        verificationProvider.setVerification(mobile);
+        return verificationProvider.getVerification().split(" ")[1];
     }
 
 }

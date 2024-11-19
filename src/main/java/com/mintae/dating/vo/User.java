@@ -9,6 +9,5 @@ import lombok.Setter;
 public class User {
     private Long id;
     private String mobile;
-    private String password;
     private String role;
 }

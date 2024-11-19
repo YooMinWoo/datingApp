@@ -1,6 +1,7 @@
 package com.mintae.dating.security.user;
 
 
+import com.mintae.dating.service.VerificationProvider;
 import com.mintae.dating.vo.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import java.util.List;
 public class CustomUserDetails implements UserDetails {
 
     private final User user;
+    private final VerificationProvider verificationProvider;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -47,9 +49,8 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getPassword() {
-        return user.getPassword();
+        return verificationProvider.getVerification();
     }
-
     @Override
     public String getUsername() {
         return user.getMobile();
