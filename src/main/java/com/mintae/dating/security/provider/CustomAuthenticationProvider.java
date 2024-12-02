@@ -24,11 +24,11 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         UserDetails user = userDetailsService.loadUserByUsername(mobile);
 
-        System.out.println("UserDetails에 담긴 인증번호 값: " + user.getPassword());
-        System.out.println("Authentication에 담긴 인증번호 값: " + verification);
-
+        if(user.getPassword() == null){
+            throw new BadCredentialsException("인증번호를 먼저 발급받아주세요.");
+        }
         // 평문 비교
-        if (!user.getPassword().equals(verification)) {
+        else if (!user.getPassword().equals(verification)) {
             throw new BadCredentialsException("인증번호가 틀렸습니다.");
         }
 

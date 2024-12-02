@@ -1,5 +1,7 @@
 package com.mintae.dating.security.jwt;
 
+import com.mintae.dating.security.handler.CustomAuthenticationFailureHandler;
+import com.mintae.dating.security.handler.CustomAuthenticationSuccessHandler;
 import com.mintae.dating.security.user.CustomUserDetails;
 import com.mintae.dating.service.VerificationProvider;
 import jakarta.servlet.FilterChain;
@@ -14,6 +16,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -24,12 +28,17 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final VerificationProvider verificationProvider;
+    private final CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler;
+    private final CustomAuthenticationFailureHandler customAuthenticationFailureHandler;
+    private final String loginUrl = "/loginProcess";
 
-    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, VerificationProvider verificationProvider , String loginUrl) {
+    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, VerificationProvider verificationProvider , CustomAuthenticationSuccessHandler customAuthenticationSuccessHandler, CustomAuthenticationFailureHandler customAuthenticationFailureHandler) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.verificationProvider = verificationProvider;
-        setFilterProcessesUrl(loginUrl);
+        this.customAuthenticationSuccessHandler = customAuthenticationSuccessHandler;
+        this.customAuthenticationFailureHandler = customAuthenticationFailureHandler;
+        setRequiresAuthenticationRequestMatcher(new AntPathRequestMatcher(loginUrl, "POST"));
     }
 
     @Override
@@ -48,45 +57,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     // 로그인 성공시 실행하는 메서드(여기서 jwt 발급)
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
-        CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
-        String username = customUserDetails.getUsername();
-
-        System.out.println("휴대폰 번호: "+username);
-
-        Collection<? extends GrantedAuthority> authorities = authResult.getAuthorities();
-        Iterator<? extends GrantedAuthority> iterator = authorities.iterator();
-        GrantedAuthority auth = iterator.next();
-
-        String role = auth.getAuthority();
-
-        // 액세스토큰 (1시간)
-        String access = jwtUtil.createJwt("access", username, role, 60*60*1000L);
-
-        // 리프레쉬토큰 (24시간)
-        String refresh = jwtUtil.createJwt("refresh", username, role, 24*60*60*1000L);
-
-        //응답 설정
-        response.setHeader("access", access);
-        response.addCookie(createCookie("refresh", refresh));
-        response.setStatus(HttpStatus.OK.value());
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authentication) throws IOException, ServletException {
+        customAuthenticationSuccessHandler.onAuthenticationSuccess(request,response,authentication);
     }
 
     // 로그인 실패시 실행하는 메서드
     @Override
-    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException failed) throws IOException, ServletException {
-        response.setStatus(401);
+    protected void unsuccessfulAuthentication(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
+        customAuthenticationFailureHandler.onAuthenticationFailure(request,response,exception);
     }
 
-
-    private Cookie createCookie(String key, String value) {
-
-        Cookie cookie = new Cookie(key, value);
-        cookie.setMaxAge(24*60*60);
-        //cookie.setSecure(true);
-        //cookie.setPath("/");
-        cookie.setHttpOnly(true);
-
-        return cookie;
-    }
 }

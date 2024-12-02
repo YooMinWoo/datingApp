@@ -5,26 +5,49 @@ import com.mintae.dating.service.VerificationProvider;
 import com.mintae.dating.vo.User;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
-@RequiredArgsConstructor
 @Getter
-public class CustomUserDetails implements UserDetails {
+public class CustomUserDetails implements UserDetails, OAuth2User {
 
-    private final User user;
-    private final VerificationProvider verificationProvider;
+    private User user;
+    private VerificationProvider verificationProvider;
+
+    @Autowired
+    public CustomUserDetails(User user, VerificationProvider verificationProvider) {
+        this.user = user;
+        this.verificationProvider = verificationProvider;
+    }
+
+    @Autowired
+    public CustomUserDetails(User user) {
+        this.user = user;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        List<GrantedAuthority> authorities = new ArrayList<>();
-        authorities.add(new SimpleGrantedAuthority(user.getRole()));
-        return authorities;
+        Collection<GrantedAuthority> collection = new ArrayList<>();
+        collection.add(new GrantedAuthority() {
+            @Override
+            public String getAuthority() {
+                return user.getRole();
+            }
+        });
+        return collection;
+    }
+
+    @Override
+    public Map<String, Object> getAttributes() {
+        return null;
     }
 
     @Override
@@ -54,5 +77,10 @@ public class CustomUserDetails implements UserDetails {
     @Override
     public String getUsername() {
         return user.getMobile();
+    }
+
+    @Override
+    public String getName() {
+        return "";
     }
 }

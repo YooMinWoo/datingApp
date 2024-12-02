@@ -11,4 +11,5 @@ public class MainController {
     public String mainPage(){
         return "메인페이지";
     }
+
 }

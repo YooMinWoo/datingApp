@@ -1,5 +1,7 @@
 package com.mintae.dating.security.jwt;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.mintae.dating.dto.ApiResponse;
 import com.mintae.dating.security.service.CustomUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;
@@ -8,6 +10,7 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -25,6 +28,8 @@ public class JwtFilter extends OncePerRequestFilter {
 
         //request에서 access 헤더를 찾음
         String accessToken = request.getHeader("access");
+        ApiResponse<?> apiResponse = null;
+        ObjectMapper objectMapper = new ObjectMapper();
 
         //access 헤더 검증
         if (accessToken == null) {
@@ -40,21 +45,24 @@ public class JwtFilter extends OncePerRequestFilter {
             if(!category.equals("access")){
                 throw new JwtException("유효하지 않은 토큰입니다.");
             }
+            Authentication authentication = jwtUtil.getAuthentication(accessToken);
+
+            //세션에 사용자 등록
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+
+
+            filterChain.doFilter(request, response);
+
+            return;
         } catch(ExpiredJwtException e){
-            response.getWriter().print("토큰이 만료되었습니다.");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+            apiResponse = new ApiResponse<>(HttpStatus.UNAUTHORIZED.value(), "토큰이 만료되었습니다.", null);
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
         } catch(JwtException e){
-            response.getWriter().print("토큰에 에러가 발생했습니다.");
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            return;
+            apiResponse = new ApiResponse<>(HttpStatus.UNAUTHORIZED.value(), "토큰에 에러가 발생했습니다.", null);
+            response.setStatus(HttpStatus.UNAUTHORIZED.value());
         }
-
-        Authentication authToken = jwtUtil.getAuthentication(accessToken);
-
-        //세션에 사용자 등록
-        SecurityContextHolder.getContext().setAuthentication(authToken);
-
-        filterChain.doFilter(request, response);
+        response.setContentType("application/json;charset=UTF-8");
+        String responseBody = objectMapper.writeValueAsString(apiResponse);
+        response.getWriter().write(responseBody);
     }
 }

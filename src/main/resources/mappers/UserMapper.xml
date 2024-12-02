@@ -8,6 +8,10 @@
         SELECT * FROM user WHERE mobile = #{mobile}
     </select>
 
+    <select id="findByMobile_OAuth" resultType="com.mintae.dating.security.oauth.dto.OAuth2DTO">
+        SELECT * FROM oauth WHERE user_id = #{user_id}
+    </select>
+
     <insert id="signup">
         insert into user(mobile, role) values(#{mobile},#{role})
     </insert>
