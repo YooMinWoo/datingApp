@@ -1,0 +1,39 @@
+CREATE TABLE `mintae`.`user` (
+  `id` INT NOT NULL AUTO_INCREMENT,
+  `mobile` VARCHAR(255) NOT NULL,
+  `gender` VARCHAR(45) NOT NULL,
+  `birth_date` DATE NOT NULL,
+  `address` VARCHAR(255) NOT NULL,
+  `height` INT NOT NULL,
+  `education` VARCHAR(255) NOT NULL,
+  `job` VARCHAR(255) NOT NULL,
+  `religion` VARCHAR(255) NOT NULL,
+  `alcohol` VARCHAR(255) NOT NULL,
+  `cigarette` VARCHAR(255) NOT NULL,
+  `role` VARCHAR(255) NOT NULL DEFAULT 'ROLE_USER',
+  `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `update_date` TIMESTAMP NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE INDEX `mobile_UNIQUE` (`mobile` ASC) VISIBLE)
+
+
+
+  CREATE TABLE `mintae`.`term` (
+    `id` INT NOT NULL AUTO_INCREMENT,
+    `name` VARCHAR(255) NOT NULL,
+    `content` VARCHAR(1000) NOT NULL,
+    `type` INT NOT NULL,
+    PRIMARY KEY (`id`))
+
+
+CREATE TABLE `user_term` (
+   `user_id` int NOT NULL,
+   `term_id` int NOT NULL,
+   `agree` int NOT NULL,
+   `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   PRIMARY KEY (`user_id`,`term_id`),
+   KEY `term_id_idx` (`term_id`),
+   CONSTRAINT `term_id` FOREIGN KEY (`term_id`) REFERENCES `term` (`id`),
+   CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin
+

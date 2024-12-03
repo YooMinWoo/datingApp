@@ -13,7 +13,8 @@
     </select>
 
     <insert id="signup">
-        insert into user(mobile, role) values(#{mobile},#{role})
+        insert into user(mobile, gender, birth_date, address, height, education, job, religion, alcohol, cigarette)
+        values(#{mobile}, #{gender}, #{birth_date}, #{address}, #{height}, #{education}, #{job}, #{religion}, #{alcohol}, #{cigarette})
     </insert>
 
 

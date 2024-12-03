@@ -11,7 +11,7 @@ public interface UserMapper {
 
     User findByMobile(String mobile);
 
-    void signup(SignupDTO signupDTO);
+    void signup(SignupDTO.SignupDTO_User signupDTO);
 
     OAuth2DTO findByMobile_OAuth(Long user_id);
 }

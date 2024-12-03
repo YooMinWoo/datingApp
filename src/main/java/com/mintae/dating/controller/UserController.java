@@ -26,9 +26,9 @@ public class UserController {
     public ResponseEntity<?> signup(@RequestBody SignupDTO signupDTO){
 
         try{
-            userService.existByMobile(signupDTO.getMobile());
-            userService.checkVerification(signupDTO.getMobile() + " " + signupDTO.getVerification());
-            userService.signupProcess(signupDTO);
+            userService.existByMobile(signupDTO.getUser().getMobile());
+            userService.checkVerification(signupDTO.getUser().getMobile() + " " + signupDTO.getUser().getVerification());
+            userService.signupProcess(signupDTO.getUser());
             ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "회원가입 성공!", signupDTO);
             return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
         } catch (CustomException e){
@@ -56,7 +56,7 @@ public class UserController {
     // 인증번호 일치 여부 (인증번호와 입력한 값이 일치하는지)
     @PostMapping("check-verification")
     public ResponseEntity<?> checkVerification(@RequestParam(value = "mobile") String mobile, @RequestParam(value = "verification") String verification){
-        try{
+        try {
             userService.checkVerification(mobile+" "+verification);
             ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "인증번호가 일치합니다.", null);
             return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
@@ -83,5 +83,4 @@ public class UserController {
         ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "개인정보 조회", user);
         return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
     }
-
 }

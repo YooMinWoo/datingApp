@@ -4,8 +4,8 @@ import com.mintae.dating.dto.SignupDTO;
 import com.mintae.dating.exception.CustomException;
 import com.mintae.dating.mapper.UserMapper;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -14,9 +14,8 @@ public class UserService {
     private final UserMapper userMapper;
     private final VerificationProvider verificationProvider;
 
-    public void signupProcess(SignupDTO signupDTO) throws Exception {
-
-        signupDTO.setRole("ROLE_USER");
+    @Transactional
+    public void signupProcess(SignupDTO.SignupDTO_User signupDTO) throws Exception {
         userMapper.signup(signupDTO);
     }
 
