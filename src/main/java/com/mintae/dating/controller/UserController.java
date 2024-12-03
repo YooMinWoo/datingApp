@@ -40,6 +40,13 @@ public class UserController {
         }
     }
 
+    @PostMapping("/value-test")
+    public void value_test(@RequestBody SignupDTO signupDTO){
+        System.out.println(signupDTO.getUser().toString());
+        System.out.println(signupDTO.getTerm().toString());
+        System.out.println(signupDTO.getPreference().toString());
+    }
+
     // 사용 가능한 전화번호 체크
     @PostMapping("/check-mobile")
     public ResponseEntity<?> checkPhone(@RequestParam(value = "mobile") String mobile){

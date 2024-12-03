@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 
-@SpringBootApplication // 시큐리티 기능 off
+@SpringBootApplication
 public class DatingApplication {
 
 	public static void main(String[] args) {
