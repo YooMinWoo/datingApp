@@ -14,6 +14,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,12 +26,12 @@ public class UserController {
     private final VerificationProvider verificationProvider;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupDTO signupDTO){
+    public ResponseEntity<?> signup(@RequestBody SignupDTO signupDTO, @RequestPart("profile") List<MultipartFile> multipartFile){
 
         try{
             userService.existByMobile(signupDTO.getUser().getMobile());
             userService.checkVerification(signupDTO.getUser().getMobile() + " " + signupDTO.getUser().getVerification());
-            userService.signupProcess(signupDTO.getUser());
+            userService.signupProcess(signupDTO, multipartFile);
             ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "회원가입 성공!", signupDTO);
             return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
         } catch (CustomException e){
@@ -41,11 +44,10 @@ public class UserController {
     }
 
     @PostMapping("/value-test")
-    public void value_test(@RequestBody SignupDTO signupDTO){
-        System.out.println(signupDTO.getUser().toString());
-        System.out.println(signupDTO.getTerm().toString());
-        System.out.println(signupDTO.getPreference().toString());
+    public void value_test(@RequestPart("signupDTO") SignupDTO signupDTO, @RequestPart("profile") List<MultipartFile> multipartFiles) {
+        userService.signupProcess(signupDTO, multipartFiles);
     }
+
 
     // 사용 가능한 전화번호 체크
     @PostMapping("/check-mobile")

@@ -23,6 +23,8 @@ CREATE TABLE `mintae`.`user` (
     `name` VARCHAR(255) NOT NULL,
     `content` VARCHAR(1000) NOT NULL,
     `type` INT NOT NULL,
+    `status` TINYINT(1) NOT NULL,
+    `create_date` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
     PRIMARY KEY (`id`))
 
 
@@ -37,3 +39,41 @@ CREATE TABLE `user_term` (
    CONSTRAINT `user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin
 
+
+
+CREATE TABLE `feature` (
+   `id` int NOT NULL AUTO_INCREMENT,
+   `content` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+   `custom` tinyint(1) NOT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin
+
+
+CREATE TABLE `interest` (
+   `id` int NOT NULL AUTO_INCREMENT,
+   `content` varchar(255) COLLATE utf8mb3_bin NOT NULL,
+   `custom` tinyint(1) NOT NULL,
+   PRIMARY KEY (`id`)
+ ) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin
+
+
+CREATE TABLE `user_feature` (
+   `user_id` int NOT NULL,
+   `feature_id` int NOT NULL,
+   `status` tinyint(1) NOT NULL,
+   PRIMARY KEY (`user_id`,`feature_id`),
+   KEY `feature_id_idx` (`feature_id`) /*!80000 INVISIBLE */,
+   CONSTRAINT `user_feature_feature_id` FOREIGN KEY (`feature_id`) REFERENCES `feature` (`id`),
+   CONSTRAINT `user_feature_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin
+
+
+ CREATE TABLE `user_interest` (
+    `user_id` int NOT NULL,
+    `interest_id` int NOT NULL,
+    `status` tinyint(1) NOT NULL,
+    PRIMARY KEY (`user_id`,`interest_id`),
+    KEY `interest_id_idx` (`interest_id`) /*!80000 INVISIBLE */,
+    CONSTRAINT `user_interest_interest_id` FOREIGN KEY (`interest_id`) REFERENCES `interest` (`id`),
+    CONSTRAINT `user_interest_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
+  ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin

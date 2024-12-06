@@ -12,10 +12,53 @@
         SELECT * FROM oauth WHERE user_id = #{user_id}
     </select>
 
-    <insert id="signup">
+    <insert id="signup" useGeneratedKeys="true" keyProperty="id">
         insert into user(mobile, gender, birth_date, address, height, education, job, religion, alcohol, cigarette)
         values(#{mobile}, #{gender}, #{birth_date}, #{address}, #{height}, #{education}, #{job}, #{religion}, #{alcohol}, #{cigarette})
     </insert>
+
+    <insert id="insertTest">
+        insert into test (test_value)
+        values(#{test_value})
+    </insert>
+
+    <select id="getTest" resultType="com.mintae.dating.dto.TestDTO">
+        SELECT * FROM test WHERE id = #{id}
+    </select>
+
+    <insert id="insertInterest" useGeneratedKeys="true" keyProperty="id">
+        insert into interest (content, custom)
+        values(#{content}, true)
+    </insert>
+
+    <insert id="insertFeature" useGeneratedKeys="true" keyProperty="id">
+        insert into feature (content, custom)
+        values(#{content}, true)
+    </insert>
+
+    <insert id="insertUser_Interest">
+        insert into user_interest (user_id, interest_id, status)
+        values(#{user_id}, #{interest_id}, true)
+    </insert>
+
+    <insert id="insertUser_Term">
+        insert into user_term (user_id, term_id, agree)
+        values(#{user_id}, #{term_id}, #{agree})
+    </insert>
+
+    <insert id="insertUser_Feature">
+        insert into user_feature (user_id, feature_id, status)
+        values(#{user_id}, #{feature_id}, true)
+    </insert>
+
+    <select id="getInterest" resultType="com.mintae.dating.vo.Interest">
+        SELECT * FROM interest WHERE id = #{id}
+    </select>
+
+    <select id="getUser_Interest" resultType="com.mintae.dating.vo.User_Interest">
+        SELECT * FROM user_interest WHERE user_id = #{id}
+    </select>
+
 
 
 </mapper>
