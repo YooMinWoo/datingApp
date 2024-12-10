@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 @Service
@@ -19,7 +21,7 @@ public class UserService {
     private final VerificationProvider verificationProvider;
 
     @Transactional
-    public void signupProcess(SignupDTO signupDTO, List<MultipartFile> multipartFile) {
+    public void signupProcess(SignupDTO signupDTO, List<MultipartFile> multipartFile) throws IOException {
         /*
             1. user 테이블에 먼저 값을 넣은 뒤, user_id를 받아온다.
             2. 요청 값 모두에 user_id를 set한다.
@@ -43,14 +45,17 @@ public class UserService {
         // 특징 insert(사용자 직접 추가의 경우만)
         insertFeature(signupDTO.getFeatures());
 
-        // id 값들 세팅하기.
+        // id 값들 세팅하기
         signupDTO.setUser_Id();
 
         // profile dto 값 세팅
         signupDTO.setProfileList(multipartFile);
 
-        System.out.println(signupDTO);
-//        System.out.println(signupDTO.getProfile());
+        // profile 파일 업로드
+        profile_upload(signupDTO.getProfile());
+
+        // 프로필 insert
+        insert_profile(signupDTO.getProfile());
 
         // 약관 insert
         insertUser_Term(signupDTO.getUser_terms());
@@ -60,9 +65,21 @@ public class UserService {
 
         // user_features에 값 추가
         insertUser_Feature(signupDTO.getUser_features());
-
-        throw new RuntimeException("공습경보!!!");
     }
+
+    private void profile_upload(List<SignupDTO.SignupDTO_Profile> profiles) throws IOException {
+        if(profiles.isEmpty()) throw new RuntimeException();
+        for(SignupDTO.SignupDTO_Profile profile : profiles){
+            // 파일 업로드
+            profile.getFile().transferTo(new File(profile.getSaved_path()));
+        }
+    }
+
+    private void insert_profile(List<SignupDTO.SignupDTO_Profile> profiles){
+        for(SignupDTO.SignupDTO_Profile profile : profiles){
+            userMapper.insertProfile(profile);
+        }
+    };
 
     private void insertUser_Term(List<SignupDTO.SignupDTO_User_Term> user_terms) {
         for (SignupDTO.SignupDTO_User_Term user_term : user_terms){
@@ -112,14 +129,6 @@ public class UserService {
 
     public void existByMobile(String mobile) {
         if(userMapper.findByMobile(mobile) != null) throw new CustomException("이미 존재하는 전화번호입니다.");
-    }
-
-    public void insertTest(TestDTO testDTO){
-        userMapper.insertTest(testDTO);
-    }
-
-    public TestDTO getTest(Long id){
-        return userMapper.getTest(id);
     }
 
 }

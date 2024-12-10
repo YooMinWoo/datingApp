@@ -17,15 +17,6 @@
         values(#{mobile}, #{gender}, #{birth_date}, #{address}, #{height}, #{education}, #{job}, #{religion}, #{alcohol}, #{cigarette})
     </insert>
 
-    <insert id="insertTest">
-        insert into test (test_value)
-        values(#{test_value})
-    </insert>
-
-    <select id="getTest" resultType="com.mintae.dating.dto.TestDTO">
-        SELECT * FROM test WHERE id = #{id}
-    </select>
-
     <insert id="insertInterest" useGeneratedKeys="true" keyProperty="id">
         insert into interest (content, custom)
         values(#{content}, true)
@@ -49,6 +40,11 @@
     <insert id="insertUser_Feature">
         insert into user_feature (user_id, feature_id, status)
         values(#{user_id}, #{feature_id}, true)
+    </insert>
+
+    <insert id="insertProfile">
+        insert into profile (user_id, original_name, saved_name, saved_path, status)
+        values(#{user_id}, #{original_name}, #{saved_name}, #{saved_path}, true)
     </insert>
 
     <select id="getInterest" resultType="com.mintae.dating.vo.Interest">

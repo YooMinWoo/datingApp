@@ -19,10 +19,6 @@ public interface UserMapper {
 
     OAuth2DTO findByMobile_OAuth(Long user_id);
 
-    void insertTest(TestDTO testDTO);
-
-    TestDTO getTest(Long id);
-
     void insertInterest(SignupDTO.SignupDTO_Interest interest);
 
     Interest getInterest(Long id);
@@ -36,4 +32,6 @@ public interface UserMapper {
     void insertFeature(SignupDTO.SignupDTO_Feature feature);
 
     void insertUser_Term(SignupDTO.SignupDTO_User_Term user_term);
+
+    void insertProfile(SignupDTO.SignupDTO_Profile profile);
 }

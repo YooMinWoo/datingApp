@@ -7,6 +7,7 @@ import com.mintae.dating.security.user.CustomUserDetails;
 import com.mintae.dating.service.VerificationProvider;
 import com.mintae.dating.service.UserService;
 import com.mintae.dating.vo.User;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -44,9 +46,14 @@ public class UserController {
     }
 
     @PostMapping("/value-test")
-    public void value_test(@RequestPart("signupDTO") SignupDTO signupDTO, @RequestPart("profile") List<MultipartFile> multipartFiles) {
-        userService.signupProcess(signupDTO, multipartFiles);
+    public void value_test(@RequestPart(value = "profiles", required = false) List<MultipartFile> profiles, @RequestPart("signupDTO") @Valid SignupDTO signupDTO) throws IOException {
+        userService.signupProcess(signupDTO, profiles);
     }
+
+//    @PostMapping("/profile_test")
+//    public
+
+
 
 
     // 사용 가능한 전화번호 체크
