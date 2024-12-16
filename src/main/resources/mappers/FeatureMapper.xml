@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mintae.dating.mapper.FeatureMapper">
+
+    <select id="getFeatures" resultType="com.mintae.dating.vo.Feature">
+        SELECT * FROM feature where custom = false
+    </select>
+
+    <insert id="insertFeature">
+        insert into feature(content, custom)
+        values(#{content}, false)
+    </insert>
+
+    <update id="updateFeature">
+        update feature set
+        content = #{content}
+        where id = #{id}
+    </update>
+
+    <delete id="deleteFeature">
+        DELETE FROM feature
+        WHERE id = #{id}
+    </delete>
+
+
+
+</mapper>

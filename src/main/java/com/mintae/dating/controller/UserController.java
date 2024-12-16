@@ -46,15 +46,10 @@ public class UserController {
     }
 
     @PostMapping("/value-test")
-    public void value_test(@RequestPart(value = "profiles", required = false) List<MultipartFile> profiles, @RequestPart("signupDTO") @Valid SignupDTO signupDTO) throws IOException {
+    public void value_test(@RequestPart("profiles") List<MultipartFile> profiles,
+                           @RequestPart("signupDTO") @Valid SignupDTO signupDTO) throws IOException {
         userService.signupProcess(signupDTO, profiles);
     }
-
-//    @PostMapping("/profile_test")
-//    public
-
-
-
 
     // 사용 가능한 전화번호 체크
     @PostMapping("/check-mobile")

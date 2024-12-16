@@ -60,7 +60,7 @@ public class SecurityConfig {
 
         http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/signup", "/verification", "/reissue", "/login", "/loginPage","/error").permitAll()
+//                        .requestMatchers("/", "/signup", "/verification", "/reissue", "/login", "/loginPage","/error").permitAll()
                         .anyRequest().permitAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)

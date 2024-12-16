@@ -209,6 +209,12 @@ public class SignupDTO {
         private Long id;
         private String content;
         private boolean custom;
+
+        @AssertTrue(message = "특징 선택 중 에러발생.")
+        public boolean isInterestValid() {
+            if(id == null && content.equals("")) return false;
+            return true;
+        }
     }
 
     @Data

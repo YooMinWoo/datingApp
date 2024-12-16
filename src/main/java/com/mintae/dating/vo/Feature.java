@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Getter
-public class Interest {
+public class Feature {
 
     private final Long id;
     private final String content;
