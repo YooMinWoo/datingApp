@@ -62,7 +62,7 @@ public class FeatureController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/feature")
+    @PutMapping("/feature")
     public ResponseEntity<?> updateInterest(@RequestBody @Valid List<FeatureDTO> featureDTOs){
         try {
             featureService.updateFeature(featureDTOs);

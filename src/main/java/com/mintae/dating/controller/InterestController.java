@@ -62,7 +62,7 @@ public class InterestController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/interest")
+    @PutMapping("/interest")
     public ResponseEntity<?> updateInterest(@RequestBody @Valid List<InterestDTO> interestDTOs){
         try {
             interestService.updateInterest(interestDTOs);

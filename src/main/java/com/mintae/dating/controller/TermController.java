@@ -59,7 +59,7 @@ public class TermController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @PostMapping("/term")
+    @PutMapping("/term")
     public ResponseEntity<?> updateTerm(@RequestBody @Valid List<TermDTO> termDTOs){
         try {
             termService.updateTerm(termDTOs);

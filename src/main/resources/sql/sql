@@ -93,3 +93,17 @@ CREATE TABLE `user_feature` (
      KEY `profile_user_id_idx` (`user_id`),
      CONSTRAINT `profile_user_id` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin
+
+   CREATE TABLE `notification` (
+      `id` int NOT NULL AUTO_INCREMENT,
+      `sender_id` int NOT NULL,
+      `receiver_id` int NOT NULL,
+      `content` varchar(45) COLLATE utf8mb3_bin NOT NULL,
+      `create_date` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      `read_date` timestamp NULL DEFAULT NULL,
+      PRIMARY KEY (`id`),
+      KEY `notification_sender_id_idx` (`sender_id`),
+      KEY `notification_receiver_id_idx` (`receiver_id`),
+      CONSTRAINT `notification_receiver_id` FOREIGN KEY (`receiver_id`) REFERENCES `user` (`id`),
+      CONSTRAINT `notification_sender_id` FOREIGN KEY (`sender_id`) REFERENCES `user` (`id`)
+    ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb3 COLLATE=utf8mb3_bin

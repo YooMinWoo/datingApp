@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.mintae.dating.mapper.NotificationMapper">
+
+    <select id="getNotification" resultType="com.mintae.dating.vo.Notification">
+        SELECT * FROM notification where receiver_id = #{id} order by create_date desc
+    </select>
+
+    <insert id="insertNotification">
+        insert into notification(sender_id, receiver_id, content)
+        values(#{sender_id}, #{receiver_id}, #{content})
+    </insert>
+
+    <update id="readNotification">
+        update notification set read_date = now() where receiver_id = #{id} and read_date is null
+    </update>
+
+</mapper>

@@ -8,6 +8,7 @@ import com.mintae.dating.vo.Feature;
 import com.mintae.dating.vo.Interest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 
 import java.util.List;
 

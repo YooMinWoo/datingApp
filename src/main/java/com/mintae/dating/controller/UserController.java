@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -87,10 +88,13 @@ public class UserController {
 
     @GetMapping("/my")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<?> myPage(){
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+    public ResponseEntity<?> myPage(@AuthenticationPrincipal CustomUserDetails customUserDetails){
+//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+//        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
+//        User user = customUserDetails.getUser();
+//        System.out.println("유저 아이디: "+user.getId());
         User user = customUserDetails.getUser();
+        System.out.println("유저 아이디2: "+user.getId());
         ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "개인정보 조회", user);
         return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
     }
