@@ -27,31 +27,20 @@ public class NotificationController {
     @PostMapping("/like")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> like(@AuthenticationPrincipal CustomUserDetails customUserDetails, NotificationDTO notificationDTO){
-        try {
-            User user = customUserDetails.getUser();
-            notificationDTO.setSender_id(user.getId());
-            notificationService.insertNotification(notificationDTO);
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "성공", null);
-            return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
-        } catch (CustomException e){
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "실패", null);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(apiResponse);
-        }
+        User user = customUserDetails.getUser();
+        notificationDTO.setSender_id(user.getId());
+        notificationService.insertNotification(notificationDTO);
+        return ResponseEntity.ok(ApiResponse.success("성공", null));
     }
 
     // 알림 전체 조회
     @GetMapping("/notification")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> getNotification(@AuthenticationPrincipal CustomUserDetails customUserDetails){
-        try {
-            User user = customUserDetails.getUser();
-            List<Notification> notification = notificationService.getNotification(user);
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "성공", notification);
-            return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
-        } catch (CustomException e){
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "실패", null);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(apiResponse);
-        }
+        User user = customUserDetails.getUser();
+        List<Notification> notification = notificationService.getNotification(user);
+        ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "성공", notification);
+        return ResponseEntity.ok(ApiResponse.success("성공", notification));
     }
 
 }

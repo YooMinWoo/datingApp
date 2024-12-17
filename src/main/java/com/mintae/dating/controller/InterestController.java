@@ -25,52 +25,32 @@ public class InterestController {
 
     @GetMapping("/interest")
     public ResponseEntity<?> getInterests(){
-        try {
-            List<Interest> interests = interestService.getInterests();
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "조회 성공", interests);
-            return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
-        } catch (CustomException e){
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.FORBIDDEN.value(), "에러 발생", null);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(apiResponse);
-        }
+        List<Interest> interests = interestService.getInterests();
+        ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "조회 성공", interests);
+        return ResponseEntity.ok(ApiResponse.success("조회 성공", interests));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PostMapping("/interest")
     public ResponseEntity<?> insertInterest(@RequestBody @Valid List<InterestDTO> InterestDTOs){
-        try {
-            interestService.insertInterest(InterestDTOs);
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "생성 성공", null);
-            return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
-        } catch (CustomException e){
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.FORBIDDEN.value(), "생성 중 에러 발생", null);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(apiResponse);
-        }
+        interestService.insertInterest(InterestDTOs);
+        ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "생성 성공", null);
+        return ResponseEntity.ok(ApiResponse.success("생성 성공", null));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/interest")
     public ResponseEntity<?> deleteInterest(@RequestParam("id") List<Long> ids){
-        try {
-            interestService.deleteInterest(ids);
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "삭제 성공", null);
-            return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
-        } catch (CustomException e){
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.FORBIDDEN.value(), "삭제 중 에러 발생", null);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(apiResponse);
-        }
+        interestService.deleteInterest(ids);
+        ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "삭제 성공", null);
+        return ResponseEntity.ok(ApiResponse.success("삭제 성공", null));
     }
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/interest")
     public ResponseEntity<?> updateInterest(@RequestBody @Valid List<InterestDTO> interestDTOs){
-        try {
-            interestService.updateInterest(interestDTOs);
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "수정 성공", null);
-            return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
-        } catch (CustomException e){
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.FORBIDDEN.value(), "수정 중 에러 발생", null);
-            return ResponseEntity.status(HttpStatus.FORBIDDEN.value()).body(apiResponse);
-        }
+        interestService.updateInterest(interestDTOs);
+        ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "수정 성공", null);
+        return ResponseEntity.ok(ApiResponse.success("수정 성공", null));
     }
 }

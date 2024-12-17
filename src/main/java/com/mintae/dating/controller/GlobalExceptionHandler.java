@@ -1,6 +1,7 @@
 package com.mintae.dating.controller;
 
 import com.mintae.dating.dto.ApiResponse;
+import com.mintae.dating.exception.CustomException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -10,13 +11,13 @@ import org.springframework.web.servlet.NoHandlerFoundException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-    @ExceptionHandler(NoHandlerFoundException.class)
-    public ResponseEntity<?> handleNotFound(NoHandlerFoundException ex){
-        ApiResponse<?> response = new ApiResponse<>(
-                HttpStatus.NOT_FOUND.value(),
-                "요청하신 페이지를 찾을 수 없습니다.",
-                null
-        );
-        return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
+    @ExceptionHandler(CustomException.class)
+    public ResponseEntity<?> customExceptionHandler(CustomException e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(ApiResponse.fail(e.getMessage()));
+    }
+
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<?> ExceptionHandler(Exception e){
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(ApiResponse.fail(e.getMessage()));
     }
 }

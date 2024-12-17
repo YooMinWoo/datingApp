@@ -29,73 +29,45 @@ public class UserController {
     private final VerificationProvider verificationProvider;
 
     @PostMapping("/signup")
-    public ResponseEntity<?> signup(@RequestBody SignupDTO signupDTO, @RequestPart("profile") List<MultipartFile> multipartFile){
-
-        try{
-            userService.existByMobile(signupDTO.getUser().getMobile());
-            userService.checkVerification(signupDTO.getUser().getMobile() + " " + signupDTO.getUser().getVerification());
-            userService.signupProcess(signupDTO, multipartFile);
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "회원가입 성공!", signupDTO);
-            return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
-        } catch (CustomException e){
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), e.getMessage(), signupDTO);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(apiResponse);
-        } catch (Exception e){
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "회원가입 실패!", signupDTO);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(apiResponse);
-        }
+    public ResponseEntity<?> signup(@RequestBody SignupDTO signupDTO, @RequestPart("profile") List<MultipartFile> multipartFile) throws IOException {
+        userService.existByMobile(signupDTO.getUser().getMobile());
+        userService.checkVerification(signupDTO.getUser().getMobile() + " " + signupDTO.getUser().getVerification());
+        userService.signupProcess(signupDTO, multipartFile);
+        return ResponseEntity.status(HttpStatus.OK.value()).body(ApiResponse.success("회원가입 성공!", signupDTO));
     }
 
     @PostMapping("/value-test")
-    public void value_test(@RequestPart("profiles") List<MultipartFile> profiles,
-                           @RequestPart("signupDTO") @Valid SignupDTO signupDTO) throws IOException {
+    public ResponseEntity<?> value_test(@RequestPart("profiles") List<MultipartFile> profiles,
+                                        @RequestPart("signupDTO") @Valid SignupDTO signupDTO) throws IOException {
         userService.signupProcess(signupDTO, profiles);
+        return ResponseEntity.ok(ApiResponse.success("회원가입 성공!", signupDTO));
     }
 
     // 사용 가능한 전화번호 체크
     @PostMapping("/check-mobile")
     public ResponseEntity<?> checkPhone(@RequestParam(value = "mobile") String mobile){
-        try{
             userService.existByMobile(mobile);
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "사용 가능한 전화번호", null);
-            return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
-        } catch (CustomException e){
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.CONFLICT.value(), e.getMessage(), null);
-            return ResponseEntity.status(HttpStatus.CONFLICT.value()).body(apiResponse);
-        }
+            return ResponseEntity.ok(ApiResponse.success("사용 가능한 전화번호",null));
     }
 
     // 인증번호 일치 여부 (인증번호와 입력한 값이 일치하는지)
     @PostMapping("check-verification")
     public ResponseEntity<?> checkVerification(@RequestParam(value = "mobile") String mobile, @RequestParam(value = "verification") String verification){
-        try {
             userService.checkVerification(mobile+" "+verification);
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "인증번호가 일치합니다.", null);
-            return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
-        } catch (CustomException e){
-            ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.BAD_REQUEST.value(), "인증번호가 일치하지 않습니다.", null);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST.value()).body(apiResponse);
-        }
+            return ResponseEntity.ok(ApiResponse.success("인증번호가 일치합니다.", null));
     }
 
 
     @GetMapping("/verification")
     public ResponseEntity<?> verification(@RequestParam("mobile") String mobile){
         verificationProvider.setVerification(mobile);
-        ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), verificationProvider.getVerification().split(" ")[1], verificationProvider.getVerification());
-        return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
+        return ResponseEntity.ok(ApiResponse.success(verificationProvider.getVerification().split(" ")[1], verificationProvider.getVerification()));
     }
 
     @GetMapping("/my")
     @PreAuthorize("isAuthenticated()")
     public ResponseEntity<?> myPage(@AuthenticationPrincipal CustomUserDetails customUserDetails){
-//        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-//        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-//        User user = customUserDetails.getUser();
-//        System.out.println("유저 아이디: "+user.getId());
         User user = customUserDetails.getUser();
-        System.out.println("유저 아이디2: "+user.getId());
-        ApiResponse<?> apiResponse = new ApiResponse<>(HttpStatus.OK.value(), "개인정보 조회", user);
-        return ResponseEntity.status(HttpStatus.OK.value()).body(apiResponse);
+        return ResponseEntity.ok(ApiResponse.success("개인정보 조회", user));
     }
 }
