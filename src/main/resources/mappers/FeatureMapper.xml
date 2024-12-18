@@ -2,9 +2,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mintae.dating.mapper.FeatureMapper">
+<mapper namespace="com.mintae.dating.feature.mapper.FeatureMapper">
 
-    <select id="getFeatures" resultType="com.mintae.dating.vo.Feature">
+    <select id="getFeatures" resultType="com.mintae.dating.feature.vo.Feature">
         SELECT * FROM feature where custom = false
     </select>
 

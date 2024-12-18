@@ -1,19 +1,16 @@
 package com.mintae.dating.security.user;
 
 
-import com.mintae.dating.service.VerificationProvider;
-import com.mintae.dating.vo.User;
+import com.mintae.dating.global.service.VerificationProvider;
+import com.mintae.dating.user.vo.User;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 @Getter

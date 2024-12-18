@@ -1,9 +1,8 @@
 package com.mintae.dating.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mintae.dating.dto.ApiResponse;
+import com.mintae.dating.global.dto.ApiResponse;
 import com.mintae.dating.security.jwt.JwtUtil;
-import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;

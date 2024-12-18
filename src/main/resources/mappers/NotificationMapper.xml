@@ -2,9 +2,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mintae.dating.mapper.NotificationMapper">
+<mapper namespace="com.mintae.dating.notification.mapper.NotificationMapper">
 
-    <select id="getNotification" resultType="com.mintae.dating.vo.Notification">
+    <select id="getNotification" resultType="com.mintae.dating.notification.vo.Notification">
         SELECT * FROM notification where receiver_id = #{id} order by create_date desc
     </select>
 

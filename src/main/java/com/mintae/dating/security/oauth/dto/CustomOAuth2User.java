@@ -1,8 +1,7 @@
 package com.mintae.dating.security.oauth.dto;
 
 
-import com.mintae.dating.dto.UserDTO;
-import com.mintae.dating.vo.User;
+import com.mintae.dating.user.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.core.user.OAuth2User;

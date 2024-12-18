@@ -1,9 +1,9 @@
 package com.mintae.dating.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mintae.dating.dto.ApiResponse;
-import com.mintae.dating.exception.ProviderMismatchException;
-import com.mintae.dating.exception.UserNotRegisteredException;
+import com.mintae.dating.global.dto.ApiResponse;
+import com.mintae.dating.global.exception.ProviderMismatchException;
+import com.mintae.dating.global.exception.UserNotRegisteredException;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;

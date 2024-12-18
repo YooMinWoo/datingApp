@@ -1,9 +1,9 @@
 package com.mintae.dating.security.service;
 
-import com.mintae.dating.mapper.UserMapper;
+import com.mintae.dating.user.mapper.UserMapper;
 import com.mintae.dating.security.user.CustomUserDetails;
-import com.mintae.dating.service.VerificationProvider;
-import com.mintae.dating.vo.User;
+import com.mintae.dating.global.service.VerificationProvider;
+import com.mintae.dating.user.vo.User;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

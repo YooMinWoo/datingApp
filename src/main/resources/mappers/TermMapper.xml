@@ -2,9 +2,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mintae.dating.mapper.TermMapper">
+<mapper namespace="com.mintae.dating.term.mapper.TermMapper">
 
-    <select id="getTerms" resultType="com.mintae.dating.vo.Term">
+    <select id="getTerms" resultType="com.mintae.dating.term.vo.Term">
         SELECT * FROM term
     </select>
 

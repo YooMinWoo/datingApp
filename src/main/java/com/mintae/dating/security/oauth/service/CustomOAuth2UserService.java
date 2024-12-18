@@ -1,13 +1,12 @@
 package com.mintae.dating.security.oauth.service;
 
-import com.mintae.dating.exception.ProviderMismatchException;
-import com.mintae.dating.exception.UserNotRegisteredException;
-import com.mintae.dating.mapper.UserMapper;
+import com.mintae.dating.global.exception.ProviderMismatchException;
+import com.mintae.dating.global.exception.UserNotRegisteredException;
+import com.mintae.dating.user.mapper.UserMapper;
 import com.mintae.dating.security.oauth.dto.*;
 import com.mintae.dating.security.user.CustomUserDetails;
-import com.mintae.dating.vo.User;
+import com.mintae.dating.user.vo.User;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.oauth2.client.userinfo.DefaultOAuth2UserService;
 import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;

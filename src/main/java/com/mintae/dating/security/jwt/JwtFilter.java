@@ -1,7 +1,7 @@
 package com.mintae.dating.security.jwt;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mintae.dating.dto.ApiResponse;
+import com.mintae.dating.global.dto.ApiResponse;
 import com.mintae.dating.security.service.CustomUserDetailsService;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.JwtException;

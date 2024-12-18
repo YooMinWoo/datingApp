@@ -2,9 +2,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mintae.dating.mapper.InterestMapper">
+<mapper namespace="com.mintae.dating.interest.mapper.InterestMapper">
 
-    <select id="getInterests" resultType="com.mintae.dating.vo.Interest">
+    <select id="getInterests" resultType="com.mintae.dating.interest.vo.Interest">
         SELECT * FROM interest where custom = false
     </select>
 

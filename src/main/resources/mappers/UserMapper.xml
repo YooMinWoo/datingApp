@@ -2,9 +2,9 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTO Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.mintae.dating.mapper.UserMapper">
+<mapper namespace="com.mintae.dating.user.mapper.UserMapper">
 
-    <select id="findByMobile" resultType="com.mintae.dating.vo.User">
+    <select id="findByMobile" resultType="com.mintae.dating.user.vo.User">
         SELECT * FROM user WHERE mobile = #{mobile}
     </select>
 
@@ -47,11 +47,11 @@
         values(#{user_id}, #{original_name}, #{saved_name}, #{saved_path}, true)
     </insert>
 
-    <select id="getInterest" resultType="com.mintae.dating.vo.Interest">
+    <select id="getInterest" resultType="com.mintae.dating.interest.vo.Interest">
         SELECT * FROM interest WHERE id = #{id}
     </select>
 
-    <select id="getUser_Interest" resultType="com.mintae.dating.vo.User_Interest">
+    <select id="getUser_Interest" resultType="com.mintae.dating.user_interest.vo.User_Interest">
         SELECT * FROM user_interest WHERE user_id = #{id}
     </select>
 
