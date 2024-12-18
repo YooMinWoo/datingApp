@@ -41,21 +41,21 @@ public class UserController {
     }
 
     // 사용 가능한 전화번호 체크
-    @PostMapping("/check-mobile")
+    @PostMapping("/check/mobile")
     public ResponseEntity<?> checkPhone(@RequestParam(value = "mobile") String mobile){
             userService.existByMobile(mobile);
             return ResponseEntity.ok(ApiResponse.success("사용 가능한 전화번호",null));
     }
 
     // 인증번호 일치 여부 (인증번호와 입력한 값이 일치하는지)
-    @PostMapping("check-verification")
+    @PostMapping("/check/verification")
     public ResponseEntity<?> checkVerification(@RequestParam(value = "mobile") String mobile, @RequestParam(value = "verification") String verification){
             userService.checkVerification(mobile+" "+verification);
             return ResponseEntity.ok(ApiResponse.success("인증번호가 일치합니다.", null));
     }
 
 
-    @GetMapping("/verification")
+    @PostMapping("/verification")
     public ResponseEntity<?> verification(@RequestParam("mobile") String mobile){
         verificationProvider.setVerification(mobile);
         return ResponseEntity.ok(ApiResponse.success(verificationProvider.getVerification().split(" ")[1], verificationProvider.getVerification()));
